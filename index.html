@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f5">
+  <title>Web Server User Console</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="หน้าหลัก">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-name">SERVER<span class="brand-light">/DESK</span></span>
+      </a>
+      <div class="topbar-right">
+        <span class="local-badge"><span class="status-dot"></span> ทำงานในเครื่อง</span>
+        <span class="avatar" aria-hidden="true">T</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">USER DIRECTORY <span>·</span> LOCAL COPY</p>
+          <h1 id="page-title">ข้อมูลผู้ใช้</h1>
+          <p class="intro-copy">จัดการรายการผู้ใช้ของแต่ละเว็บเซิร์ฟเวอร์</p>
+        </div>
+        <div class="updated-note"><span class="pulse-dot"></span> บันทึกใน PostgreSQL</div>
+      </section>
+
+      <nav class="service-tabs" aria-label="เลือกเว็บเซิร์ฟเวอร์" role="tablist">
+        <button class="service-tab is-active" id="tab-apache" type="button" role="tab" aria-selected="true" aria-controls="service-panel" data-service="apache">
+          <span class="server-icon apache-icon" aria-hidden="true">A</span>
+          <span>Apache</span>
+          <span class="tab-count" id="apache-count">0</span>
+        </button>
+        <button class="service-tab" id="tab-nginx" type="button" role="tab" aria-selected="false" aria-controls="service-panel" data-service="nginx" tabindex="-1">
+          <span class="server-icon nginx-icon" aria-hidden="true">N</span>
+          <span>Nginx</span>
+          <span class="tab-count" id="nginx-count">0</span>
+        </button>
+      </nav>
+
+      <section class="service-heading" id="service-panel" role="tabpanel" aria-labelledby="tab-apache">
+        <div class="service-title-wrap">
+          <span class="service-kicker" id="service-kicker">APACHE WEB SERVER</span>
+          <h2 class="server-page-title"><span class="server-name" id="service-title">Apache</span><span>Web Server</span></h2>
+        </div>
+        <div class="connection-state"><span class="status-dot"></span><span>พร้อมใช้งาน</span></div>
+      </section>
+
+      <div class="database-alert" role="status"><strong>Database Status:</strong> <span id="database-message">กำลังเชื่อมต่อ PostgreSQL</span></div>
+
+      <section class="workspace-grid" aria-label="การจัดการข้อมูลผู้ใช้">
+        <section class="form-panel" aria-labelledby="form-title">
+          <div class="panel-heading">
+            <div class="panel-icon add-icon" aria-hidden="true">+</div>
+            <div>
+              <h2 id="form-title">เพิ่มข้อมูลผู้ใช้</h2>
+              <p>กรอกรายละเอียดเพื่อเพิ่มรายการใหม่</p>
+            </div>
+          </div>
+          <form id="user-form">
+            <label for="user-name">ชื่อ</label>
+            <input id="user-name" name="name" type="text" placeholder="เช่น ธีรพล สาระพันธ์" autocomplete="name" required>
+            <label for="user-email">อีเมล</label>
+            <input id="user-email" name="email" type="email" placeholder="name@example.com" autocomplete="email" required>
+            <label for="user-phone">เบอร์โทร</label>
+            <input id="user-phone" name="phone" type="tel" placeholder="กรอกเบอร์โทร" autocomplete="tel">
+            <button class="submit-button" type="submit"><span aria-hidden="true">+</span> บันทึกข้อมูล</button>
+            <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="table-panel" aria-labelledby="table-title">
+          <div class="table-toolbar">
+            <div>
+              <h2 id="table-title">รายการผู้ใช้</h2>
+              <p><span id="visible-count">0</span> รายการ</p>
+            </div>
+            <label class="search-box" for="user-search">
+              <span class="search-icon" aria-hidden="true"></span>
+              <input id="user-search" type="search" placeholder="ค้นหาชื่อหรืออีเมล" autocomplete="off">
+              <kbd>/</kbd>
+            </label>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th scope="col">ID</th><th scope="col">ชื่อ</th><th scope="col">Email</th><th scope="col">เบอร์โทร</th></tr>
+              </thead>
+              <tbody id="user-rows"></tbody>
+            </table>
+            <div class="empty-state" id="empty-state" hidden>
+              <span class="empty-symbol" aria-hidden="true">⌕</span>
+              <strong>ไม่พบข้อมูล</strong>
+              <span>ลองค้นหาด้วยคำอื่น</span>
+            </div>
+          </div>
+          <div class="table-footer"><span class="footer-indicator"></span> ข้อมูลจัดเก็บใน PostgreSQL</div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="page-footer"><span>SERVER/DESK</span><span>POSTGRESQL DATABASE</span></footer>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+</body>
+</html>
