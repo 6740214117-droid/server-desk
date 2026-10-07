@@ -117,7 +117,7 @@ async function connectDatabase() {
 
     const usersResponse = await fetch(`/api/${activeService}/users`);
     currentUsers = await readApiResponse(usersResponse);
-    databaseMessage.textContent = 'เชื่อมต่อ PostgreSQL แล้ว';
+    databaseMessage.textContent = 'เชื่อมต่อ MySQL แล้ว';
     databaseAlert.classList.add('is-connected');
   } catch (error) {
     databaseMessage.textContent = error.message || 'เชื่อมต่อฐานข้อมูลไม่ได้';
