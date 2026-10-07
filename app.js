@@ -7,13 +7,23 @@ const emptyState = document.querySelector('#empty-state');
 const visibleCount = document.querySelector('#visible-count');
 const serviceTitle = document.querySelector('#service-title');
 const serviceKicker = document.querySelector('#service-kicker');
-const servicePanel = document.querySelector('#service-panel');
 const toast = document.querySelector('#toast');
 const databaseAlert = document.querySelector('.database-alert');
 const databaseMessage = document.querySelector('#database-message');
-let activeService = 'apache';
+const activeService = window.location.pathname.split('/').filter(Boolean)[0] === 'nginx' ? 'nginx' : 'apache';
+const serviceLabel = activeService === 'apache' ? 'Apache' : 'Nginx';
 let toastTimer;
-let usersByService = { apache: [], nginx: [] };
+let currentUsers = [];
+
+serviceTabs.forEach((tab) => {
+  const selected = tab.dataset.service === activeService;
+  tab.classList.toggle('is-active', selected);
+  if (selected) tab.setAttribute('aria-current', 'page');
+  else tab.removeAttribute('aria-current');
+});
+serviceTitle.textContent = serviceLabel;
+serviceKicker.textContent = `${serviceLabel.toUpperCase()} WEB SERVER`;
+document.title = `${serviceLabel} Web Server User Console`;
 
 async function readApiResponse(response) {
   if (!response.headers.get('content-type')?.includes('application/json')) {
@@ -36,7 +46,7 @@ function escapeHtml(value) {
 
 function renderRows() {
   const query = searchInput.value.trim().toLocaleLowerCase('th');
-  const filtered = usersByService[activeService].filter((user) =>
+  const filtered = currentUsers.filter((user) =>
     `${user.name} ${user.email} ${user.phone}`.toLocaleLowerCase('th').includes(query)
   );
 
@@ -52,25 +62,6 @@ function renderRows() {
   emptyState.hidden = filtered.length !== 0;
   rowsElement.hidden = filtered.length === 0;
   visibleCount.textContent = filtered.length;
-  document.querySelector('#apache-count').textContent = usersByService.apache.length;
-  document.querySelector('#nginx-count').textContent = usersByService.nginx.length;
-}
-
-function selectService(service) {
-  activeService = service;
-  serviceTabs.forEach((tab) => {
-    const selected = tab.dataset.service === service;
-    tab.classList.toggle('is-active', selected);
-    tab.setAttribute('aria-selected', String(selected));
-    tab.tabIndex = selected ? 0 : -1;
-  });
-  const label = service === 'apache' ? 'Apache' : 'Nginx';
-  serviceTitle.textContent = label;
-  serviceKicker.textContent = `${label.toUpperCase()} WEB SERVER`;
-  servicePanel.setAttribute('aria-labelledby', `tab-${service}`);
-  searchInput.value = '';
-  formMessage.textContent = '';
-  renderRows();
 }
 
 function showToast(message) {
@@ -79,17 +70,6 @@ function showToast(message) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 2400);
 }
-
-serviceTabs.forEach((tab) => {
-  tab.addEventListener('click', () => selectService(tab.dataset.service));
-  tab.addEventListener('keydown', (event) => {
-    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-    event.preventDefault();
-    const nextService = activeService === 'apache' ? 'nginx' : 'apache';
-    selectService(nextService);
-    document.querySelector(`#tab-${nextService}`).focus();
-  });
-});
 
 searchInput.addEventListener('input', renderRows);
 document.addEventListener('keydown', (event) => {
@@ -106,11 +86,10 @@ form.addEventListener('submit', async (event) => {
   submitButton.disabled = true;
 
   try {
-    const response = await fetch('/api/users', {
+    const response = await fetch(`/api/${activeService}/users`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        service: activeService,
         name: formData.get('name').trim(),
         email: formData.get('email').trim(),
         phone: formData.get('phone').trim()
@@ -118,12 +97,12 @@ form.addEventListener('submit', async (event) => {
     });
     const result = await readApiResponse(response);
 
-    usersByService[activeService].unshift(result);
+    currentUsers.unshift(result);
     form.reset();
     searchInput.value = '';
     formMessage.textContent = 'เพิ่มข้อมูลเรียบร้อย';
     renderRows();
-    showToast(`เพิ่มผู้ใช้ใน ${activeService === 'apache' ? 'Apache' : 'Nginx'} แล้ว`);
+    showToast(`เพิ่มผู้ใช้ใน ${serviceLabel} แล้ว`);
   } catch (error) {
     formMessage.textContent = error.message || 'เชื่อมต่อฐานข้อมูลไม่สำเร็จ';
   } finally {
@@ -136,8 +115,8 @@ async function connectDatabase() {
     const healthResponse = await fetch('/api/health');
     await readApiResponse(healthResponse);
 
-    const usersResponse = await fetch('/api/users');
-    usersByService = await readApiResponse(usersResponse);
+    const usersResponse = await fetch(`/api/${activeService}/users`);
+    currentUsers = await readApiResponse(usersResponse);
     databaseMessage.textContent = 'เชื่อมต่อ PostgreSQL แล้ว';
     databaseAlert.classList.add('is-connected');
   } catch (error) {

@@ -1,6 +1,6 @@
 # Server Desk
 
-แอปนี้ใช้ Node.js, Express และ PostgreSQL ข้อมูลผู้ใช้จะถูกอ่านและบันทึกผ่าน API ฝั่งเซิร์ฟเวอร์
+แอปนี้ใช้ Node.js, Express และ PostgreSQL โดย Apache กับ Nginx มีหน้าและตารางข้อมูลแยกกัน
 
 ## รันในเครื่อง
 
@@ -12,7 +12,9 @@ $env:DATABASE_URL = "postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 npm start
 ```
 
-เปิด `http://localhost:3000` ในเบราว์เซอร์ ตาราง `users` และข้อมูลตัวอย่างจะถูกสร้างให้อัตโนมัติเมื่อฐานข้อมูลยังว่าง
+เปิด `http://localhost:3000/apache` สำหรับ Apache หรือ `http://localhost:3000/nginx` สำหรับ Nginx ตาราง `apache_users` และ `nginx_users` พร้อมข้อมูลตัวอย่างจะถูกสร้างให้อัตโนมัติเมื่อแต่ละตารางยังว่าง
+
+ถ้ามีตาราง `users` จากเวอร์ชันก่อน ระบบจะคัดลอกข้อมูลไปยังตารางของแต่ละบริการโดยไม่ลบตารางเดิม
 
 ## Deploy บน Railway
 

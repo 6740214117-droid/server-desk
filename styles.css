@@ -44,7 +44,7 @@ h1 { margin-bottom: 3px; font-size: 27px; line-height: 1.35; font-weight: 600; }
 .updated-note { display: flex; align-items: center; gap: 8px; padding-bottom: 3px; color: #65736e; font-size: 12px; }
 .pulse-dot { width: 6px; height: 6px; flex-basis: 6px; box-shadow: 0 0 0 4px #e2f1e9; }
 .service-tabs { display: flex; gap: 5px; padding: 0 0 0 3px; border-bottom: 1px solid #dce4e0; }
-.service-tab { position: relative; display: flex; min-width: 145px; align-items: center; gap: 9px; padding: 11px 14px 14px; border: 0; background: transparent; color: #73807b; font-size: 13px; cursor: pointer; }
+.service-tab { position: relative; display: flex; min-width: 145px; align-items: center; gap: 9px; padding: 11px 14px 14px; border: 0; background: transparent; color: #73807b; font-size: 13px; text-decoration: none; cursor: pointer; }
 .service-tab::after { position: absolute; right: 10px; bottom: -1px; left: 10px; height: 2px; background: transparent; content: ''; }
 .service-tab.is-active { color: var(--ink); font-weight: 600; }
 .service-tab.is-active::after { background: var(--green); }
@@ -139,7 +139,7 @@ body { background: #f3f3f3; }
 .topbar, .intro { display: none; }
 main { width: calc(100% - 36px); max-width: 1320px; }
 .service-tabs { justify-content: flex-end; gap: 4px; padding-top: 12px; border: 0; }
-.service-tab { min-width: 88px; justify-content: center; gap: 6px; padding: 6px 9px; border: 1px solid #d7d7d7; border-radius: 4px; background: #fff; color: #444; font-size: 11px; }
+.service-tab { min-width: 88px; justify-content: center; gap: 6px; padding: 6px 9px; border: 1px solid #d7d7d7; border-radius: 4px; background: #fff; color: #444; font-size: 11px; text-decoration: none; }
 .service-tab::after { display: none; }
 .service-tab.is-active { border-color: #dc3545; background: #dc3545; color: #fff; }
 .server-icon { display: none; }

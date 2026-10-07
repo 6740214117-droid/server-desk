@@ -11,7 +11,7 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <a class="brand" href="#" aria-label="หน้าหลัก">
+      <a class="brand" href="/apache" aria-label="หน้าหลัก Apache">
         <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
         <span class="brand-name">SERVER<span class="brand-light">/DESK</span></span>
       </a>
@@ -31,20 +31,18 @@
         <div class="updated-note"><span class="pulse-dot"></span> บันทึกใน PostgreSQL</div>
       </section>
 
-      <nav class="service-tabs" aria-label="เลือกเว็บเซิร์ฟเวอร์" role="tablist">
-        <button class="service-tab is-active" id="tab-apache" type="button" role="tab" aria-selected="true" aria-controls="service-panel" data-service="apache">
+      <nav class="service-tabs" aria-label="เลือกเว็บเซิร์ฟเวอร์">
+        <a class="service-tab is-active" id="tab-apache" href="/apache" data-service="apache" aria-current="page">
           <span class="server-icon apache-icon" aria-hidden="true">A</span>
           <span>Apache</span>
-          <span class="tab-count" id="apache-count">0</span>
-        </button>
-        <button class="service-tab" id="tab-nginx" type="button" role="tab" aria-selected="false" aria-controls="service-panel" data-service="nginx" tabindex="-1">
+        </a>
+        <a class="service-tab" id="tab-nginx" href="/nginx" data-service="nginx">
           <span class="server-icon nginx-icon" aria-hidden="true">N</span>
           <span>Nginx</span>
-          <span class="tab-count" id="nginx-count">0</span>
-        </button>
+        </a>
       </nav>
 
-      <section class="service-heading" id="service-panel" role="tabpanel" aria-labelledby="tab-apache">
+      <section class="service-heading" id="service-panel" aria-labelledby="service-title">
         <div class="service-title-wrap">
           <span class="service-kicker" id="service-kicker">APACHE WEB SERVER</span>
           <h2 class="server-page-title"><span class="server-name" id="service-title">Apache</span><span>Web Server</span></h2>
